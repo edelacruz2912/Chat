@@ -19,9 +19,8 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		primaryStage.setTitle("CHAT");
-		StackPane layout = new StackPane();
-		
-		Scene scene = new Scene(layout,500,500);
+		Window chatLayout = new Window();		
+		Scene scene = new Scene(chatLayout,500,500);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
