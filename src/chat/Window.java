@@ -2,69 +2,89 @@ package chat;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class Window extends BorderPane implements EventHandler<ActionEvent>{
 
 	//Send Button 
 	Button sendBtn;
-	//Top are for the chat
-	TextArea chatTopArea;
+	//Add Button 
+	Button addButton;
 	
 	//Top are for the chat
-	TextArea chatBottonArea;
+	TextArea chatTopAreaTextArea;
+	
+	//Top are for the chat
+	TextArea chatBottonAreaTextArea;
 	
 	//Label for the Ip and port Number
 	Label IPandPort;	
 	
 	//vertical Box for the chatTopArea
-	VBox virtualChatBox;
+	VBox TopWindowChatBoxLayout;
 	
 	//Horizontal Box for the chatTopArea
-	HBox horizontalChatBox;
+	HBox horizontalAddBoxLayout;
+	
+	//TextArea for IpNumber and PortNumber
+	TextArea ipNumberInput;
+	TextArea portNumBerInput;	
+	
+	
+	String IpSource = "000.000.0.000";
+	String portNumber = "00000";
 	
 	public Window()
 	{
 		//chat Button
 		sendBtn = new Button("send");
-		//setting the listener to the button.
+		//add button 
+		addButton = new Button("add");		
+		//setting the listener to buttons.
 		sendBtn.setOnAction(this); 
+		addButton.setOnAction(this);
+		
+		//Label for the IP and port Number
+		IPandPort = new Label("Ip: "+ IpSource +  " Port: " + portNumber);
 		
 		//for the topChatArea
-		virtualChatBox = new VBox(20); 
-		//for the centerChatArea
-		//horizontalChatBox = new HBox(20);
-		
+		TopWindowChatBoxLayout = new VBox(8); 		
 		//Top area for the chat
-		chatTopArea = new TextArea();
-		chatTopArea.setEditable(false);
+		chatTopAreaTextArea = new TextArea();
+		chatTopAreaTextArea.setMaxWidth(400);
+		//chatTopArea.setMaxHeight(450);
+		chatTopAreaTextArea.setEditable(false);
 		
 		//Bottom area for the chat
-		chatBottonArea = new TextArea();
-		chatBottonArea.setEditable(true);
+		chatBottonAreaTextArea = new TextArea();
+		chatBottonAreaTextArea.setMaxHeight(90);
+		chatBottonAreaTextArea.setEditable(true);
 		
-		////Label for the IP and port Number
-		IPandPort = new Label("Ip: 000.000.0.000 Port: 00 000");
 		
-		// Adding to the vBox.
-		virtualChatBox.getChildren().addAll(IPandPort,chatTopArea);
-		// Adding to the hBox.
-		//horizontalChatBox.getChildren().addAll(chatButtonArea,);
+		// Adding to the vBox and alignment to the layout Vbox .
+		TopWindowChatBoxLayout.setAlignment(Pos.CENTER);
+		
+		TopWindowChatBoxLayout.getChildren().addAll(IPandPort,chatTopAreaTextArea);
 		
 		//--------Setting components to BorderRegions---------
 		//setting component of the textArea to Top
-		this.setTop(virtualChatBox);
+		this.setTop(TopWindowChatBoxLayout);
 		
 		//setting component of the textArea to Center
-		this.setCenter(chatBottonArea);
+		this.setCenter(chatBottonAreaTextArea);
 		
-		//setting components to the regions in the BorderPane
-		this.setBottom(sendBtn);
+		
+		 
+		
 	}
 	
 	
@@ -76,6 +96,12 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		{
 			System.out.println("button Works");
 		}
+		
+		else if(event.getSource() == addButton)
+		{
+			System.out.println("add button works");
+		}
+		
 		
 		
 		
