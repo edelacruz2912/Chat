@@ -33,9 +33,7 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 	private TextField IPnumberTextA;
 	private TextField PortNumberTextA;
 	private Button connectBtn;
-	private Button exitBtn;	
-	
-	
+	private Button exitBtn;		
 	
 	public Window()
 	{
@@ -65,10 +63,24 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		
 		//---COMPONETS FOR LEFT REGION----
 		IPnumberTextA = new TextField();
+		IPnumberTextA.setPromptText("IP Number"); 
+		
 		PortNumberTextA = new TextField();
+		PortNumberTextA.setPromptText("Port Number"); 
 		
 		connectBtn = new Button("Connect");
 		exitBtn = new Button("Exit");
+		
+		//setting the listener of each Button 
+		//send Button for the center Region
+		sendBtn.setOnAction(this);
+		
+		//connection Button for the left Region
+		connectBtn.setOnAction(this);
+		
+		//exit Button for the left Region
+		exitBtn.setOnAction(this);
+		
 		
 		//adding components to the left Region to leftRegionVBoxLayout
 		leftRegionVBoxLayout.getChildren().addAll(IPnumberTextA,PortNumberTextA,connectBtn,exitBtn);
@@ -78,8 +90,7 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		this.setCenter(centerContainerVLayout);//adding all the components to the center regions
 		this.setLeft(leftRegionVBoxLayout);//adding all the components for left region inside the VBox
 		
-	}
-	
+	}	
 	
 	@Override
 	public void handle(ActionEvent event) {
@@ -87,7 +98,7 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		
 		if(event.getSource() == sendBtn)
 		{
-			System.out.println("sendbutton Works");
+			System.out.println("sendBtn button Works");
 		}
 		
 		else if(event.getSource() == connectBtn)
