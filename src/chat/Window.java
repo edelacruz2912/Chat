@@ -74,7 +74,6 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		leftRegionVBoxLayout.getChildren().addAll(IPnumberTextA,PortNumberTextA,connectBtn,exitBtn);
 		
 		
-		
 		//Setting components for each region in the BorderPane 
 		this.setCenter(centerContainerVLayout);//adding all the components to the center regions
 		this.setLeft(leftRegionVBoxLayout);//adding all the components for left region inside the VBox
