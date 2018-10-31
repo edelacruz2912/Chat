@@ -9,6 +9,9 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
 
+	//SOCKET CLASS
+	Socket  socket;
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		launch(args);
@@ -19,7 +22,14 @@ public class Main extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
 		primaryStage.setTitle("CHAT");
-		Window chatLayout = new Window();		
+		
+		//SOCKET CLASS
+		socket = new Socket(12345);
+		
+		Window chatLayout = new Window(socket);
+		
+		
+		
 		Scene scene = new Scene(chatLayout,500,500);
 		primaryStage.setScene(scene);
 		primaryStage.show();

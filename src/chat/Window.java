@@ -1,5 +1,7 @@
 package chat;
 
+import java.net.InetAddress;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -30,13 +32,21 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 	
 	//Components For the Left regions to connect to other computer
 	private VBox leftRegionVBoxLayout;	
-	private TextField IPnumberTextA;
-	private TextField PortNumberTextA;
+	private TextField destinationIPnumberTextA;
+	private TextField destinationPortNumberTextA;
 	private Button connectBtn;
-	private Button exitBtn;		
+	private Button exitBtn;	
 	
-	public Window()
+	//SOCKET CLASS FROM 
+	Socket socket;
+	
+	public Window(Socket referenceOfSocket)
 	{
+		//reference to the socket
+		this.socket = referenceOfSocket;
+		
+		
+		
 		//For the Center regions
 		centerContainerVLayout = new VBox();
 		centerContainerVLayout.setPadding(new Insets(10));
@@ -62,11 +72,11 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		centerContainerVLayout.setSpacing(2);
 		
 		//---COMPONETS FOR LEFT REGION----
-		IPnumberTextA = new TextField();
-		IPnumberTextA.setPromptText("IP Number"); 
+		destinationIPnumberTextA = new TextField();
+		destinationIPnumberTextA.setPromptText("IP Number"); 
 		
-		PortNumberTextA = new TextField();
-		PortNumberTextA.setPromptText("Port Number"); 
+		destinationPortNumberTextA = new TextField();
+		destinationPortNumberTextA.setPromptText("Port Number"); 
 		
 		connectBtn = new Button("Connect");
 		exitBtn = new Button("Exit");
@@ -83,7 +93,7 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		
 		
 		//adding components to the left Region to leftRegionVBoxLayout
-		leftRegionVBoxLayout.getChildren().addAll(IPnumberTextA,PortNumberTextA,connectBtn,exitBtn);
+		leftRegionVBoxLayout.getChildren().addAll(destinationIPnumberTextA,destinationPortNumberTextA,connectBtn,exitBtn);
 		
 		
 		//Setting components for each region in the BorderPane 
@@ -99,6 +109,27 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		if(event.getSource() == sendBtn)
 		{
 			System.out.println("sendBtn button Works");
+			//extract msn from textArea the port Number and ipNumber
+			String senderText = bottomPartOfChatTextA.getText();
+			String destinationIpn = destinationIPnumberTextA.getText();
+			String destinationPortN = destinationPortNumberTextA.getText();
+			
+			
+			//using the send method from socket class
+			//reference from socket class been pass 
+			//through the constructor
+			try 
+			{
+				socket.send(senderText, InetAddress.getByName(destinationIpn),Integer.valueOf(destinationPortN));
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			
+			
+			
+			
 		}
 		
 		else if(event.getSource() == connectBtn)
