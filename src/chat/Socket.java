@@ -66,6 +66,13 @@ public class Socket {
 					" From IP = " + inPacket.getAddress() + 
 					" From Port = " + inPacket.getPort());
 			messageQueue.add(inPacket);
+			
+			//testing 
+			//hashMapDataHolder.get();
+			
+			
+			
+			
 		} while(true);
 	}
 	

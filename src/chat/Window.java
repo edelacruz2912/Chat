@@ -120,14 +120,16 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 			destinationIpn = destinationIPnumberTextA.getText();
 			destinationPortN = destinationPortNumberTextA.getText();
 			
-			
+			//(sendDataToSocket)send data to hashMap to retrieve who
+			//you have to talk to.
+			sendDataToSocket();
 			//using the send method from socket class
 			//reference from socket class been pass 
 			//through the constructor
 			try 
 			{
 				socket.send(senderText, InetAddress.getByName(destinationIpn),Integer.valueOf(destinationPortN));
-				sendDataToSocket();
+				
 			}
 			catch(Exception e)
 			{
@@ -145,12 +147,26 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 			System.out.println("exitBtn button works");
 		}	
 		
-		
 	}
 	
-	public void sendDataToSocket()
+	private void sendDataToSocket()
 	{
-		this.socket.hashMapDataHolder.put(destinationIpn + destinationPortN,this);
+			this.socket.hashMapDataHolder.put(destinationIpn + destinationPortN,this);
+	}
+	
+	public String getSenderText()
+	{
+		return this.senderText;
+	}
+	
+	public String getDestinationIpn()
+	{
+		return this.destinationIpn;
+	}
+	
+	public String getDestinationPortN()
+	{
+		return destinationPortN;
 	}
 
 }
