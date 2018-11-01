@@ -3,6 +3,7 @@ package chat;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class Socket {
@@ -11,7 +12,7 @@ public class Socket {
 	private int port;
 	private DatagramSocket socket = null;
 	private ConcurrentLinkedQueue<DatagramPacket> messageQueue = new ConcurrentLinkedQueue<DatagramPacket>();
-	
+	public ConcurrentHashMap<String,Window> hashMapDataHolder = new ConcurrentHashMap<String,Window>(); 
 	
 	public Socket(int port)
 	{
