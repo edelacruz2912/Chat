@@ -91,6 +91,9 @@ public void send(String s, InetAddress destinationIP, int destinationPort) {
 			outPacket.setAddress(destinationIP);
 			outPacket.setPort(destinationPort);
 			socket.send(outPacket);
+			System.out.println("MSN: " + s);
+			System.out.println("msn has been send to port : " + destinationPort);
+			System.out.println("destinationIp : " + destinationIP);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);

@@ -11,6 +11,7 @@ public class Main extends Application{
 
 	//SOCKET CLASS
 	Socket  socket;
+	private int port = 9090;
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -21,10 +22,10 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-		primaryStage.setTitle("CHAT");
+		primaryStage.setTitle("CHAT with port: " + this.port);
 		
 		//SOCKET CLASS
-		socket = new Socket(12345);
+		socket = new Socket(this.port);
 		
 		Window chatLayout = new Window(socket);
 		

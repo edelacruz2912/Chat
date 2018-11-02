@@ -38,12 +38,12 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 	private Button exitBtn;	
 	
 	//SOCKET CLASS FROM 
-	Socket socket;
+	private Socket socket;
 	
 	//variable holder to get data from chat and Ip number/port
-	String senderText = null;
-	String destinationIpn = null;
-	String destinationPortN = null;
+	private String senderText = null;
+	private String destinationIpn = null;
+	private String destinationPortN = null;
 	
 	
 	public Window(Socket referenceOfSocket)
@@ -51,8 +51,7 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		//reference to the socket
 		this.socket = referenceOfSocket;
 		
-		
-		
+				
 		//For the Center regions
 		centerContainerVLayout = new VBox();
 		centerContainerVLayout.setPadding(new Insets(10));
@@ -115,21 +114,22 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		if(event.getSource() == sendBtn)
 		{
 			System.out.println("sendBtn button Works");
-			//extract msn from textArea the port Number and ipNumber
+		
+			//Getting packet info From GUI
 			senderText = bottomPartOfChatTextA.getText();
 			destinationIpn = destinationIPnumberTextA.getText();
-			destinationPortN = destinationPortNumberTextA.getText();
+			destinationPortN = destinationPortNumberTextA.getText();						
+					
 			
-			//(sendDataToSocket)send data to hashMap to retrieve who
-			//you have to talk to.
-			sendDataToSocket();
-			//using the send method from socket class
-			//reference from socket class been pass 
-			//through the constructor
+			//If Port and IP is not in the hashMap
+			if(!this.socket.hashMapDataHolder.containsKey(getIPandPort()))
+			{
+				sendPackageDToHashM();
+			}			
 			try 
 			{
 				socket.send(senderText, InetAddress.getByName(destinationIpn),Integer.valueOf(destinationPortN));
-				
+			
 			}
 			catch(Exception e)
 			{
@@ -149,24 +149,36 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		
 	}
 	
-	private void sendDataToSocket()
+	public void appendTxtToTextArea(String text)
 	{
-			this.socket.hashMapDataHolder.put(destinationIpn + destinationPortN,this);
+		topPartOfChatTextA.appendText(text);
 	}
 	
-	public String getSenderText()
+	public String getDataUserInput()
 	{
-		return this.senderText;
+		return bottomPartOfChatTextA.getText();
 	}
 	
-	public String getDestinationIpn()
+	private String getIPandPort() 
 	{
-		return this.destinationIpn;
+		return "Ip:"+ this.destinationIpn + "Port:"+this.destinationPortN;
 	}
 	
-	public String getDestinationPortN()
+	
+	//put package data in the hashMap
+	private void sendPackageDToHashM()
 	{
-		return destinationPortN;
+			this.socket.hashMapDataHolder.put("Ip:"+destinationIpn + "Port:"+destinationPortN,this);
+			
 	}
+	
+	
+	public String getPacketInfo()
+	{
+		return "Ip:"+this.destinationIpn + "Port:"+this.destinationPortN + "MSN:"+this.senderText;
+	}
+	
+	
+	
 
 }
