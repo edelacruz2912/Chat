@@ -170,12 +170,17 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 	{
 			this.socket.hashMapDataHolder.put("Ip:"+destinationIpn + "Port:"+destinationPortN,this);
 			
-	}
-	
+	}	
 	
 	public String getPacketInfo()
 	{
 		return "Ip:"+this.destinationIpn + "Port:"+this.destinationPortN + "MSN:"+this.senderText;
+	}
+	
+	//returning the reference of the window chat.
+	public Window getChatWindow()
+	{
+		return this;
 	}
 	
 	
