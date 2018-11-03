@@ -12,7 +12,7 @@ public class Socket {
 	private int port; // port
 	private DatagramSocket socket = null;
 	private ConcurrentLinkedQueue<DatagramPacket> messageQueue = new ConcurrentLinkedQueue<DatagramPacket>();
-	public ConcurrentHashMap<String,Window> hashMapDataHolder = new ConcurrentHashMap<String,Window>(); 
+	public static ConcurrentHashMap<String,Window> hashMapDataHolder = new ConcurrentHashMap<String,Window>(); 
 	private String MSN = null;
 	
 	public String inputMsn = null;	
@@ -50,7 +50,7 @@ public class Socket {
 	
 	public void receiveThread() 
 	{
-		dataInsideHasMap();
+		//dataInsideHasMap();
 		System.out.println("on the receiveThread method");
 		
 		do {
@@ -73,10 +73,10 @@ public class Socket {
 			this.MSN = message;
 			Ip = inPacket.getAddress().getHostAddress();//this is where it cames from. 
 			port = inPacket.getPort();//this is the port where the msn it came from.
-			System.out.println("ReceiveThread - Message on port = " + this.port + 
+			/*System.out.println("ReceiveThread - Message on port = " + this.port + 
 					" message = " + message + "\n" +
 					" From IP = " + inPacket.getAddress() + 
-					" From Port = " + inPacket.getPort());
+					" From Port = " + inPacket.getPort());*/
 			messageQueue.add(inPacket);
 			
 			//Receiving 
@@ -84,7 +84,7 @@ public class Socket {
 			if(hashMapDataHolder.containsKey(getIPandPort())) //check if info package is on the hashMap to link to chat window.
 			{
 				Window window = hashMapDataHolder.get(getIPandPort()); //getting the window
-				window.appendTxtToTextArea(message);
+				window.appendTxtToTextArea(message + "\n");
 				//window.topPartOfChatTextA.appendText(message);
 				
 			}
@@ -111,12 +111,19 @@ public class Socket {
 	}
 	
 	
-	private void dataInsideHasMap()
+	public String getIpandPort(String Ip, String port)
 	{
+		return "Ip:"+ Ip + "Port:"+ port;
+	}
+	
+	
+	
+	public void dataInsideHasMap()
+	{
+		System.out.println("insideHashMap of port " + port);
 		for(String str : hashMapDataHolder.keySet()) 
 		{
-			System.out.println("keys(Ip&Port) : " + str + "  value(Window)"
-								+ hashMapDataHolder.get(str).toString());
+			System.out.println("keys(Ip&Port) : " + str + "  value(Window)"	+ hashMapDataHolder.get(str).toString());
 			
 		}
 		
@@ -128,7 +135,7 @@ public class Socket {
 		
 		byte[] outBuffer;
 		
-		dataInsideHasMap();
+		//dataInsideHasMap();
 		System.out.println("in the send method");
 		
 		try {
@@ -137,9 +144,9 @@ public class Socket {
 			outPacket.setAddress(destinationIP);
 			outPacket.setPort(destinationPort);
 			socket.send(outPacket);
-			System.out.println("MSN: " + s);
-			System.out.println("msn has been send to port : " + destinationPort);
-			System.out.println("destinationIp : " + destinationIP);
+			//System.out.println("MSN: " + s);
+			//System.out.println("msn has been send to port : " + destinationPort);
+			//System.out.println("destinationIp : " + destinationIP);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(-1);

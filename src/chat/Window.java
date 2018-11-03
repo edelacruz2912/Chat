@@ -19,6 +19,10 @@ import javafx.scene.layout.VBox;
 public class Window extends BorderPane implements EventHandler<ActionEvent>{
 
 	
+	
+	//NOTE : LA PRIMERA WINDOW CUANDO ES CREADA NO TIENE IP. NEED TO BE FIXED
+	
+	
 	//For the Top part of chat in center region
 	private VBox centerContainerVLayout;	
 	private TextArea topPartOfChatTextA;	
@@ -118,11 +122,17 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 			//Getting packet info From GUI
 			senderText = bottomPartOfChatTextA.getText();
 			destinationIpn = destinationIPnumberTextA.getText();
-			destinationPortN = destinationPortNumberTextA.getText();						
+			destinationPortN = destinationPortNumberTextA.getText();
+			
+			System.out.println("inside window method :");
+			System.out.println("destinationIpn : " + destinationIpn);
+			System.out.println("destinationPortN : " + destinationPortN);
+			
+			sendPackageDToHashM();
 					
 			
 			//If Port and IP is not in the hashMap
-			if(!this.socket.hashMapDataHolder.containsKey(getIPandPort()))
+			if(!Socket.hashMapDataHolder.containsKey(getIPandPort()))
 			{
 				sendPackageDToHashM();
 			}			
@@ -168,7 +178,7 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 	//put package data in the hashMap
 	private void sendPackageDToHashM()
 	{
-			this.socket.hashMapDataHolder.put("Ip:"+destinationIpn + "Port:"+destinationPortN,this);
+			Socket.hashMapDataHolder.put("Ip:"+destinationIpn + "Port:"+destinationPortN,this);
 			
 	}	
 	

@@ -27,10 +27,14 @@ public class Main extends Application{
 		//SOCKET CLASS
 		socket = new Socket(this.port);
 		
-		Window chatLayout = new Window(socket);
+		///hasHmap
+		//socket.dataInsideHasMap();
 		
 		
 		
+		
+		
+		Window chatLayout = new Window(socket);		
 		Scene scene = new Scene(chatLayout,500,500);
 		primaryStage.setScene(scene);
 		primaryStage.show();
