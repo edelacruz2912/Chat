@@ -23,9 +23,6 @@ public class Window  implements EventHandler<ActionEvent>{
 
 	
 	
-	//NOTE : LA PRIMERA WINDOW CUANDO ES CREADA NO TIENE IP. NEED TO BE FIXED
-	
-	
 	//For the Top part of chat in center region
 	private VBox centerContainerVLayout;	
 	private TextArea topPartOfChatTextA;	
@@ -37,7 +34,7 @@ public class Window  implements EventHandler<ActionEvent>{
 	//Component button For center regions	
 	private Button sendBtn;
 	/**
-	//Components For the Left regions to connect to other computer
+	Components For the Left regions to connect to other computer
 	private VBox leftRegionVBoxLayout;	
 	public TextField destinationIPnumberTextA;
 	public TextField destinationPortNumberTextA;
@@ -198,10 +195,20 @@ public class Window  implements EventHandler<ActionEvent>{
 		Platform.runLater( () -> topPartOfChatTextA.appendText(text + "\n"));
 	}
 	
+	/**
+	 * Method that gets the user input from the Chat.
+	 * @return a String 
+	 */
+	
 	public String getDataUserInput()
 	{
 		return bottomPartOfChatTextA.getText();
 	}
+	
+	/**
+	 * return the IP destination and port destination.
+	 * @return String
+	 */
 	
 	public String getIPandPort() 
 	{
@@ -209,7 +216,10 @@ public class Window  implements EventHandler<ActionEvent>{
 	}
 	
 	
-	//put package data in the hashMap
+	/**
+	 * Insert data inside of the hasHmap To keep track of the windows 
+	 * opened.
+	 */
 	private void sendPackageDToHashM()
 	{
 		
