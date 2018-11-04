@@ -2,10 +2,12 @@ package chat;
 
 import java.net.InetAddress;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -15,8 +17,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-public class Window extends BorderPane implements EventHandler<ActionEvent>{
+public class Window  implements EventHandler<ActionEvent>{
 
 	
 	
@@ -33,13 +36,13 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 	
 	//Component button For center regions	
 	private Button sendBtn;
-	
+	/**
 	//Components For the Left regions to connect to other computer
 	private VBox leftRegionVBoxLayout;	
-	private TextField destinationIPnumberTextA;
-	private TextField destinationPortNumberTextA;
+	public TextField destinationIPnumberTextA;
+	public TextField destinationPortNumberTextA;
 	private Button newChat;
-	private Button exitBtn;	
+	private Button exitBtn;	**/
 	
 	//SOCKET CLASS FROM 
 	private Socket socket;
@@ -49,9 +52,19 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 	private String destinationIpn = null;
 	private String destinationPortN = null;
 	
+	Scene newSceneWindow;
+	Stage newStageWindow;
+	
+	BorderPane borderP;
+	
+	int port;
 	
 	public Window(Socket referenceOfSocket)
 	{
+		
+		borderP = new BorderPane();		
+		
+		
 		//reference to the socket
 		this.socket = referenceOfSocket;
 		
@@ -71,43 +84,62 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		bottomPartOfChatTextA.setEditable(true);
 		//sendBtn
 		sendBtn = new Button("Send");
+		sendBtn.setDefaultButton(true);
+		
 		//adding all components to the VBox
 		centerContainerVLayout.getChildren().addAll(topPartOfChatTextA,bottomPartOfChatTextA,sendBtn);
 		
 		
 		//FOR THE LEFT REGION
-		leftRegionVBoxLayout = new VBox();
+		//leftRegionVBoxLayout = new VBox();
 		centerContainerVLayout.setPadding(new Insets(5));
 		centerContainerVLayout.setSpacing(2);
 		
 		//---COMPONETS FOR LEFT REGION----
-		destinationIPnumberTextA = new TextField();
-		destinationIPnumberTextA.setPromptText("IP Number"); 
+		//destinationIPnumberTextA = new TextField();
+		//destinationIPnumberTextA.setPromptText("IP Number"); 
 		
-		destinationPortNumberTextA = new TextField();
-		destinationPortNumberTextA.setPromptText("Port Number"); 
+		//destinationPortNumberTextA = new TextField();
+		//destinationPortNumberTextA.setPromptText("Port Number"); 
 		
-		newChat = new Button("Connect");
-		exitBtn = new Button("Exit");
+		//newChat = new Button("Connect");
+		//exitBtn = new Button("Exit");
 		
 		//setting the listener of each Button 
 		//send Button for the center Region
 		sendBtn.setOnAction(this);
 		
 		//connection Button for the left Region
-		newChat.setOnAction(this);
+		//newChat.setOnAction(this);
 		
 		//exit Button for the left Region
-		exitBtn.setOnAction(this);
-		
+		//exitBtn.setOnAction(this);		
 		
 		//adding components to the left Region to leftRegionVBoxLayout
-		leftRegionVBoxLayout.getChildren().addAll(destinationIPnumberTextA,destinationPortNumberTextA,newChat,exitBtn);
+		//leftRegionVBoxLayout.getChildren().addAll(destinationIPnumberTextA,destinationPortNumberTextA,newChat,exitBtn);
+	
 		
 		
 		//Setting components for each region in the BorderPane 
-		this.setCenter(centerContainerVLayout);//adding all the components to the center regions
-		this.setLeft(leftRegionVBoxLayout);//adding all the components for left region inside the VBox
+		borderP.setCenter(centerContainerVLayout);//adding all the components to the center regions
+		//borderP.setLeft(leftRegionVBoxLayout);//adding all the components for left region inside the VBox
+		
+		//----- FOR NEW WINDOW -------
+		Platform.runLater(() -> 
+		{
+			newSceneWindow = new Scene(borderP,500,500);		
+			newStageWindow = new Stage();
+			
+			newStageWindow.setScene(newSceneWindow);
+			newStageWindow.show();
+			//When chat Window is closed.
+			newStageWindow.setOnCloseRequest((e) -> {
+				Socket.hashMapDataHolder.remove(getIPandPort());
+			});
+		}); 
+		
+		
+		///-----------------------
 		
 	}	
 	
@@ -121,14 +153,17 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		
 			//Getting packet info From GUI
 			senderText = bottomPartOfChatTextA.getText();
-			destinationIpn = destinationIPnumberTextA.getText();
-			destinationPortN = destinationPortNumberTextA.getText();
+			//destinationIpn = destinationIPnumberTextA.getText();
+			//destinationPortN = destinationPortNumberTextA.getText();
+			bottomPartOfChatTextA.clear();				// Clear the bottom input field
+			appendTxtToTextArea(senderText);	// Append msg from input field
 			
+			/*
 			System.out.println("inside window method :");
 			System.out.println("destinationIpn : " + destinationIpn);
 			System.out.println("destinationPortN : " + destinationPortN);
-			
-			sendPackageDToHashM();
+			*/
+			//sendPackageDToHashM();
 					
 			
 			//If Port and IP is not in the hashMap
@@ -148,20 +183,24 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 			
 		}
 		
-		else if(event.getSource() == newChat)
-		{
-			System.out.println("connectBtn button works");
-		}
-		else if(event.getSource() == exitBtn)
-		{
-			System.out.println("exitBtn button works");
-		}	
+		
 		
 	}
 	
+	public void setDestIP(String ip) {
+		this.destinationIpn = ip;
+	}
+	public void setDestPort(String port) {
+		this.destinationPortN = port;
+	}
+	/**
+	 * Append MSN to the Top Part of the Chat
+	 * @param text string MSN.
+	 */
+	
 	public void appendTxtToTextArea(String text)
 	{
-		topPartOfChatTextA.appendText(text);
+		Platform.runLater( () -> topPartOfChatTextA.appendText(text + "\n"));
 	}
 	
 	public String getDataUserInput()
@@ -169,7 +208,7 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 		return bottomPartOfChatTextA.getText();
 	}
 	
-	private String getIPandPort() 
+	public String getIPandPort() 
 	{
 		return "Ip:"+ this.destinationIpn + "Port:"+this.destinationPortN;
 	}
@@ -178,6 +217,7 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 	//put package data in the hashMap
 	private void sendPackageDToHashM()
 	{
+		
 			Socket.hashMapDataHolder.put("Ip:"+destinationIpn + "Port:"+destinationPortN,this);
 			
 	}	
@@ -192,6 +232,8 @@ public class Window extends BorderPane implements EventHandler<ActionEvent>{
 	{
 		return this;
 	}
+	
+	
 	
 	
 	

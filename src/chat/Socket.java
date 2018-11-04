@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Socket {
 
 	private InetAddress myAddress; //Ip 
-	private int port; // port
+	public int port; // port
 	private DatagramSocket socket = null;
-	private ConcurrentLinkedQueue<DatagramPacket> messageQueue = new ConcurrentLinkedQueue<DatagramPacket>();
+	//private ConcurrentLinkedQueue<DatagramPacket> messageQueue = new ConcurrentLinkedQueue<DatagramPacket>();
 	public static ConcurrentHashMap<String,Window> hashMapDataHolder = new ConcurrentHashMap<String,Window>(); 
 	private String MSN = null;
 	
@@ -22,9 +22,7 @@ public class Socket {
 	public Socket(int port)
 	{
 		this.port = port;
-		
-		
-		
+				
 		try
 		{
 			this.myAddress = InetAddress.getLocalHost();
@@ -51,7 +49,7 @@ public class Socket {
 	public void receiveThread() 
 	{
 		//dataInsideHasMap();
-		System.out.println("on the receiveThread method");
+		//System.out.println("on the receiveThread method");
 		
 		do {
 			byte[] inBuffer = new byte[1024];
@@ -70,54 +68,59 @@ public class Socket {
 			}
 			
 			String message = new String(inPacket.getData());
-			this.MSN = message;
-			Ip = inPacket.getAddress().getHostAddress();//this is where it cames from. 
+			//this.MSN = message;
+			Ip = inPacket.getAddress().getHostAddress();//Ip :this is where it cames from. 
 			port = inPacket.getPort();//this is the port where the msn it came from.
 			/*System.out.println("ReceiveThread - Message on port = " + this.port + 
 					" message = " + message + "\n" +
 					" From IP = " + inPacket.getAddress() + 
 					" From Port = " + inPacket.getPort());*/
-			messageQueue.add(inPacket);
+			//messageQueue.add(inPacket);
 			
 			//Receiving 
-			
-			if(hashMapDataHolder.containsKey(getIPandPort())) //check if info package is on the hashMap to link to chat window.
+			String key = getIpPortKey(Ip, Integer.toString(port));
+			if(hashMapDataHolder.containsKey(key)) //check if info package is on the hashMap to link to chat window.
 			{
-				Window window = hashMapDataHolder.get(getIPandPort()); //getting the window
-				window.appendTxtToTextArea(message + "\n");
-				//window.topPartOfChatTextA.appendText(message);
-				
+				System.out.println("Incoming Message from: " + Ip + port);
+				System.out.println("Message Body" + message + "\n");
+				Window window = hashMapDataHolder.get(key); //getting the window
+				window.appendTxtToTextArea(message);
 			}
-			else 
+			else // NEW MESSAGE
 			{
 				Window w = new Window(this);
+				w.setDestIP(Ip);
+				w.setDestPort(Integer.toString(port));
 				//ip , port , window 
-				hashMapDataHolder.put(getIPandPort() , w);
+				System.out.println("Message came from NEW SENDER");
+				//w.destinationIPnumberTextA.setText(Ip);
+				///w.destinationPortNumberTextA.setText(Integer.toString(port));
+				hashMapDataHolder.put(w.getIPandPort() , w);
+				w.appendTxtToTextArea(message);
 				
-			}
-			
+			}			
 			
 			
 		} while(true);
 	}
 	
+	/*
 	public DatagramPacket receive() {
 		return messageQueue.poll();
-	}
+	}*/
 	
-	private String getIPandPort()
+	/**
+	 * Retrieve the IP and Port in Hashmap Key format
+	 * @param Ip    - incoming message's IP
+	 * @param port	- incoming message's port
+	 * @return	Hashmap Key format.
+	 */
+	private String getIpPortKey(String Ip, String port)
 	{
 		return "Ip:"+ this.Ip + "Port:"+ this.port;
 	}
 	
-	
-	public String getIpandPort(String Ip, String port)
-	{
-		return "Ip:"+ Ip + "Port:"+ port;
-	}
-	
-	
-	
+		
 	public void dataInsideHasMap()
 	{
 		System.out.println("insideHashMap of port " + port);
@@ -128,15 +131,15 @@ public class Socket {
 		}
 		
 	}
-	
-	
+		
 	
 	public void send(String s, InetAddress destinationIP, int destinationPort) {
 		
 		byte[] outBuffer;
 		
 		//dataInsideHasMap();
-		System.out.println("in the send method");
+		System.out.println("Sending Msg to: " + destinationIP.toString() + destinationPort);
+		System.out.println("Msg Body: " + s + "\n");
 		
 		try {
 			outBuffer = s.getBytes();
