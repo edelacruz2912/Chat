@@ -61,13 +61,10 @@ public class Window  implements EventHandler<ActionEvent>{
 	
 	public Window(Socket referenceOfSocket)
 	{
-		
-		borderP = new BorderPane();		
-		
-		
 		//reference to the socket
 		this.socket = referenceOfSocket;
 		
+		borderP = new BorderPane();			
 				
 		//For the Center regions
 		centerContainerVLayout = new VBox();
@@ -118,17 +115,17 @@ public class Window  implements EventHandler<ActionEvent>{
 		//adding components to the left Region to leftRegionVBoxLayout
 		//leftRegionVBoxLayout.getChildren().addAll(destinationIPnumberTextA,destinationPortNumberTextA,newChat,exitBtn);
 	
-		
-		
 		//Setting components for each region in the BorderPane 
 		borderP.setCenter(centerContainerVLayout);//adding all the components to the center regions
 		//borderP.setLeft(leftRegionVBoxLayout);//adding all the components for left region inside the VBox
 		
-		//----- FOR NEW WINDOW -------
+		//----- FOR	WINDOW -------
 		Platform.runLater(() -> 
 		{
 			newSceneWindow = new Scene(borderP,500,500);		
 			newStageWindow = new Stage();
+			
+			newStageWindow.setTitle("IP: "+ referenceOfSocket.getIncomingIp() + " " + " Port: "+referenceOfSocket.getIncomingPort());
 			
 			newStageWindow.setScene(newSceneWindow);
 			newStageWindow.show();
@@ -156,7 +153,7 @@ public class Window  implements EventHandler<ActionEvent>{
 			//destinationIpn = destinationIPnumberTextA.getText();
 			//destinationPortN = destinationPortNumberTextA.getText();
 			bottomPartOfChatTextA.clear();				// Clear the bottom input field
-			appendTxtToTextArea(senderText);	// Append msg from input field
+			appendTxtToTextArea("Me: " + senderText);	// Append msg from input field
 			
 			/*
 			System.out.println("inside window method :");
@@ -181,9 +178,7 @@ public class Window  implements EventHandler<ActionEvent>{
 				e.printStackTrace();
 			}			
 			
-		}
-		
-		
+		}		
 		
 	}
 	

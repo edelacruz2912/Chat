@@ -18,6 +18,12 @@ public class Socket {
 	public String inputMsn = null;	
 	public String Ip;
 	
+	//For the title of each window
+	String reciverIp = null;
+	String reciverPort = null;
+	
+	
+	
 	
 	public Socket(int port)
 	{
@@ -71,6 +77,12 @@ public class Socket {
 			//this.MSN = message;
 			Ip = inPacket.getAddress().getHostAddress();//Ip :this is where it cames from. 
 			port = inPacket.getPort();//this is the port where the msn it came from.
+			
+			//use setters for the incomingPort and incomingID
+			setIncomingPort(port);
+			setIncomingIp(Ip);
+			
+			
 			/*System.out.println("ReceiveThread - Message on port = " + this.port + 
 					" message = " + message + "\n" +
 					" From IP = " + inPacket.getAddress() + 
@@ -84,9 +96,9 @@ public class Socket {
 				System.out.println("Incoming Message from: " + Ip + port);
 				System.out.println("Message Body" + message + "\n");
 				Window window = hashMapDataHolder.get(key); //getting the window
-				window.appendTxtToTextArea(message);
+				window.appendTxtToTextArea(Ip + " " + port + " :" + message);
 			}
-			else // NEW MESSAGE
+			else // NEW MESSAGE 
 			{
 				Window w = new Window(this);
 				w.setDestIP(Ip);
@@ -96,7 +108,7 @@ public class Socket {
 				//w.destinationIPnumberTextA.setText(Ip);
 				///w.destinationPortNumberTextA.setText(Integer.toString(port));
 				hashMapDataHolder.put(w.getIPandPort() , w);
-				w.appendTxtToTextArea(message);
+				w.appendTxtToTextArea(Ip + " " + port + " :" + message);
 				
 			}			
 			
@@ -108,6 +120,50 @@ public class Socket {
 	public DatagramPacket receive() {
 		return messageQueue.poll();
 	}*/
+	
+	/**
+	 * set the IP of the incoming chat
+	 * @param ip
+	 */
+	private void setIncomingIp(String ip)
+	{
+		this.reciverIp = ip;
+	}
+	
+	/**
+	 * set the Port of the incoming chat
+	 * @param ReceiverPort
+	 */
+	private void setIncomingPort(int ReceiverPort)
+	{
+		this.reciverPort = Integer.toString(ReceiverPort);
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @return the incoming Ip from the user send 
+	 * MSN to me
+	 */
+	
+	public String getIncomingIp()
+	{
+		return this.reciverIp;
+	}
+	
+	/**
+	 * 
+	 * @return get the port Number From the 
+	 * user sending MSN to me.
+	 */
+	
+	public String getIncomingPort()
+	{
+		return this.reciverPort;
+	}
+	
+	
 	
 	/**
 	 * Retrieve the IP and Port in Hashmap Key format
@@ -138,8 +194,8 @@ public class Socket {
 		byte[] outBuffer;
 		
 		//dataInsideHasMap();
-		System.out.println("Sending Msg to: " + destinationIP.toString() + destinationPort);
-		System.out.println("Msg Body: " + s + "\n");
+		//System.out.println("Sending Msg to: " + destinationIP.toString() + destinationPort);
+		//System.out.println("Msg Body: " + s + "\n");
 		
 		try {
 			outBuffer = s.getBytes();

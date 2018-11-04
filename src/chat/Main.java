@@ -28,12 +28,12 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-		primaryStage.setTitle("CHAT with port: " + this.port);
+		
 		
 		//SOCKET CLASS
 		socket = new Socket(this.port);
-		
-		
+		//primaryStage.setTitle(" " +socket.Ip + " "+socket.port + " ");
+		primaryStage.setTitle("Chat Connector");
 				
 		Scene scene = new Scene(getChatConnectorContainer(),300,100);
 		primaryStage.setScene(scene);
