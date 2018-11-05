@@ -111,7 +111,7 @@ public class Socket {
 				w.appendTxtToTextArea(Ip + " " + port + " :" + message);
 				
 			}			
-			
+			dataInsideHasMap();
 			
 		} while(true);
 	}
@@ -142,9 +142,10 @@ public class Socket {
 	
 	
 	/**
-	 * 
-	 * @return the incoming Ip from the user send 
+	 * the incoming Ip from the user who send 
 	 * MSN to me
+	 * 
+	 * @return String
 	 */
 	
 	public String getIncomingIp()
@@ -153,9 +154,9 @@ public class Socket {
 	}
 	
 	/**
-	 * 
-	 * @return get the port Number From the 
+	 * get the port Number From the 
 	 * user sending MSN to me.
+	 * @return the receiverPort as a String
 	 */
 	
 	public String getIncomingPort()
@@ -182,7 +183,7 @@ public class Socket {
 		System.out.println("insideHashMap of port " + port);
 		for(String str : hashMapDataHolder.keySet()) 
 		{
-			System.out.println("keys(Ip&Port) : " + str + "  value(Window)"	+ hashMapDataHolder.get(str).toString());
+			System.out.println("\t\tkeys(Ip&Port) : " + str + "  value(Window)"	+ hashMapDataHolder.get(str).toString());
 			
 		}
 		
@@ -210,6 +211,7 @@ public class Socket {
 			e.printStackTrace();
 			System.exit(-1);
 		}
+		dataInsideHasMap();
 	}
 	
 }

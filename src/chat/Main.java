@@ -53,7 +53,6 @@ public class Main extends Application{
 //		connectorContainer.setPadding( new Insets(50));
 		connectorContainer.setPadding( new Insets(50,0, 25, 0));
 		
-		
 		destinationIPnumberTextA = new TextField();
 		destinationIPnumberTextA.setPromptText("IP Number"); 
 		destinationPortNumberTextA = new TextField();
@@ -77,27 +76,36 @@ public class Main extends Application{
 		newChat.setAlignment(Pos.BOTTOM_CENTER);
 		newChat.getStyleClass().add("button"); //CSS properties applied from Window.css
 		newChat.setOnAction((e)-> { 
-			String ip = destinationIPnumberTextA.getText();
+			String DestIp = destinationIPnumberTextA.getText();
 			String DestPort = destinationPortNumberTextA.getText();
-			System.out.println("ip: " +ip);
-			System.out.println("port: " + DestPort);
+			//System.out.println("ip: " +DestIp);
+			//System.out.println("port: " + DestPort);
 			//Check whether inputs are empty
-			if(ip.equals(DestPort)) {
+			if(DestIp.isEmpty() || DestPort.isEmpty()) { 
 				//System.out.println("this run");
 				return;
 			}
 			// If Chat w/ IP and PORT already open, dont open new chat window
-			if(Socket.hashMapDataHolder.containsKey("Ip:"+ ip + "Port:"+ DestPort)) {
+			if(Socket.hashMapDataHolder.containsKey("Ip:"+ DestIp + "Port:"+ DestPort)) {
 				return;
 			}
 			Window chatLayout = new Window(socket);
-			chatLayout.setDestIP(ip);
+			chatLayout.setDestIP(DestIp);
 			chatLayout.setDestPort(DestPort);
+			chatLayout.updateTitle();
+			//Setting the title when I start the conversation.
+			//using the Ip(From destinationIp) and port(from destinationPort) 
+			//chatLayout.newStageWindow.setTitle("IP: "+ DestIp + " " + " Port: "+DestPort);
+			//System.out.println("DestIp :---- " + DestIp  + "  DestPort :" + DestPort);
+			
 			
 			//keep tracks of conversation exists
 			Socket.hashMapDataHolder.put(chatLayout.getIPandPort(), chatLayout);
 			///hasHmap
 			socket.dataInsideHasMap();	
+			
+			
+			
 		});
 		
 		connectorContainer.getChildren().addAll(destinationIPnumberTextA,destinationPortNumberTextA,newChat);

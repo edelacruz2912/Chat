@@ -49,12 +49,14 @@ public class Window  implements EventHandler<ActionEvent>{
 	private String destinationIpn = null;
 	private String destinationPortN = null;
 	
-	Scene newSceneWindow;
-	Stage newStageWindow;
+	public Scene newSceneWindow;
+	public Stage newStageWindow;
 	
 	BorderPane borderP;
 	
 	int port;
+	
+	InetAddress testIP;
 	
 	public Window(Socket referenceOfSocket)
 	{
@@ -139,7 +141,7 @@ public class Window  implements EventHandler<ActionEvent>{
 			
 			newStageWindow.setScene(newSceneWindow);
 			newStageWindow.show();
-			//When chat Window is closed.
+			//When you want to close chat Window.
 			newStageWindow.setOnCloseRequest((e) -> {
 				Socket.hashMapDataHolder.remove(getIPandPort());
 			});
@@ -177,26 +179,41 @@ public class Window  implements EventHandler<ActionEvent>{
 			if(!Socket.hashMapDataHolder.containsKey(getIPandPort()))
 			{
 				sendPackageDToHashM();
-			}			
+			}
+			
+			
+			
+			
 			try 
 			{
-				socket.send(senderText, InetAddress.getByName(destinationIpn),Integer.valueOf(destinationPortN));
+				testIP =  InetAddress.getByName(destinationIpn);
+				
 			
 			}
 			catch(Exception e)
 			{
 				e.printStackTrace();
 			}			
-			
+			System.out.println("destinationPortN in sender " + destinationPortN);
+			System.out.println("destinationPortN in sender with converter " + Integer.valueOf(destinationPortN));
+			socket.send(senderText, testIP,Integer.valueOf(destinationPortN));
 		}		
 		
 	}
 	
+	public void updateTitle()
+	{
+		newStageWindow.setTitle("IP: "+ this.destinationIpn + " " + " Port: "+this.destinationPortN);
+	}
+	
+	
 	public void setDestIP(String ip) {
 		this.destinationIpn = ip;
+		System.out.println("setDestinationIPOnWindowClass " + this.destinationIpn);
 	}
 	public void setDestPort(String port) {
 		this.destinationPortN = port;
+		System.out.println("setDestinationPortOnWindowClass " + this.destinationPortN);
 	}
 	/**
 	 * Append MSN to the Top Part of the Chat
