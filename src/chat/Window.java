@@ -61,21 +61,32 @@ public class Window  implements EventHandler<ActionEvent>{
 		//reference to the socket
 		this.socket = referenceOfSocket;
 		
-		borderP = new BorderPane();			
+		borderP = new BorderPane();
+		borderP.setPadding(new Insets(15));
 				
 		//For the Center regions
 		centerContainerVLayout = new VBox();
-		centerContainerVLayout.setPadding(new Insets(10));
-		centerContainerVLayout.setSpacing(8);
+		//centerContainerVLayout.setPadding(new Insets(50));
+		centerContainerVLayout.setSpacing(10);
+		
 		
 		//--------COMPONENTS FOR CENTER-----------
 		
 		//top part of the Chat on the center Region
 		topPartOfChatTextA = new TextArea();
 		topPartOfChatTextA.setEditable(false);
+		topPartOfChatTextA.setId("topTxtArea"); //Setting the ID for the CSS.
+		//System.out.println("HEIGHT " + topPartOfChatTextA.getHeight() +" WIDTH " +topPartOfChatTextA.getWidth());
+		topPartOfChatTextA.setMaxHeight(480);
+		topPartOfChatTextA.setMaxWidth(500);
+		
+		
 		//Bottom part of the chat on the center Region
 		bottomPartOfChatTextA = new TextArea();
 		bottomPartOfChatTextA.setEditable(true);
+		bottomPartOfChatTextA.setId("bottomTxtArea"); //Setting the ID for the CSS. 
+		bottomPartOfChatTextA.setMaxHeight(100);
+		//bottomPartOfChatTextA.setPadding(new Insets(10));
 		//sendBtn
 		sendBtn = new Button("Send");
 		sendBtn.setDefaultButton(true);
@@ -86,8 +97,8 @@ public class Window  implements EventHandler<ActionEvent>{
 		
 		//FOR THE LEFT REGION
 		//leftRegionVBoxLayout = new VBox();
-		centerContainerVLayout.setPadding(new Insets(5));
-		centerContainerVLayout.setSpacing(2);
+		//centerContainerVLayout.setPadding(new Insets(5));
+		//centerContainerVLayout.setSpacing(2);
 		
 		//---COMPONETS FOR LEFT REGION----
 		//destinationIPnumberTextA = new TextField();
@@ -119,8 +130,10 @@ public class Window  implements EventHandler<ActionEvent>{
 		//----- FOR	WINDOW -------
 		Platform.runLater(() -> 
 		{
-			newSceneWindow = new Scene(borderP,500,500);		
-			newStageWindow = new Stage();
+			newSceneWindow = new Scene(borderP,500,300); //scene of the chat Window		
+			newSceneWindow.getStylesheets().add("chat/Window.css");
+			
+			newStageWindow = new Stage(); //Stage of the chat Window
 			
 			newStageWindow.setTitle("IP: "+ referenceOfSocket.getIncomingIp() + " " + " Port: "+referenceOfSocket.getIncomingPort());
 			

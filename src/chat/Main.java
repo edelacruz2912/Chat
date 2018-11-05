@@ -35,7 +35,8 @@ public class Main extends Application{
 		//primaryStage.setTitle(" " +socket.Ip + " "+socket.port + " ");
 		primaryStage.setTitle("Chat Connector");
 				
-		Scene scene = new Scene(getChatConnectorContainer(),300,100);
+		Scene scene = new Scene(getChatConnectorContainer(),300,250);
+		scene.getStylesheets().add("chat/Window.css");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
@@ -49,18 +50,32 @@ public class Main extends Application{
 	public VBox getChatConnectorContainer() {
 		//FOR THE LEFT REGION
 		VBox connectorContainer = new VBox();
-		connectorContainer.setAlignment(Pos.BASELINE_CENTER);
+//		connectorContainer.setPadding( new Insets(50));
+		connectorContainer.setPadding( new Insets(50,0, 25, 0));
+		
 		
 		destinationIPnumberTextA = new TextField();
 		destinationIPnumberTextA.setPromptText("IP Number"); 
 		destinationPortNumberTextA = new TextField();
 		destinationPortNumberTextA.setPromptText("Port Number");
 		
+		/**
+		 * setting the position for the textFields a button
+		 * 
+		 */
+		destinationIPnumberTextA.setAlignment(Pos.TOP_CENTER);		
+		destinationPortNumberTextA.setAlignment(Pos.BASELINE_CENTER);
 		
+		destinationIPnumberTextA.setPadding(new Insets(10));
+		destinationPortNumberTextA.setPadding(new Insets(10));
+		
+			
 		// Create new Window from Chat Connector. 
 		// Passing in IP and Port info from input fields.
 		// Adding this Window to hashMap lookup table. 
 		Button newChat = new Button("Start Chat!");
+		newChat.setAlignment(Pos.BOTTOM_CENTER);
+		newChat.getStyleClass().add("button"); //CSS properties applied from Window.css
 		newChat.setOnAction((e)-> { 
 			String ip = destinationIPnumberTextA.getText();
 			String DestPort = destinationPortNumberTextA.getText();
