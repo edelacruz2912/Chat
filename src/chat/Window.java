@@ -179,10 +179,7 @@ public class Window  implements EventHandler<ActionEvent>{
 			if(!Socket.hashMapDataHolder.containsKey(getIPandPort()))
 			{
 				sendPackageDToHashM();
-			}
-			
-			
-			
+			}	
 			
 			try 
 			{
