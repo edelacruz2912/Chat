@@ -33,13 +33,7 @@ public class Window  implements EventHandler<ActionEvent>{
 	
 	//Component button For center regions	
 	private Button sendBtn;
-	/**
-	Components For the Left regions to connect to other computer
-	private VBox leftRegionVBoxLayout;	
-	public TextField destinationIPnumberTextA;
-	public TextField destinationPortNumberTextA;
-	private Button newChat;
-	private Button exitBtn;	**/
+	
 	
 	//SOCKET CLASS FROM 
 	private Socket socket;
@@ -96,34 +90,11 @@ public class Window  implements EventHandler<ActionEvent>{
 		//adding all components to the VBox
 		centerContainerVLayout.getChildren().addAll(topPartOfChatTextA,bottomPartOfChatTextA,sendBtn);
 		
-		
-		//FOR THE LEFT REGION
-		//leftRegionVBoxLayout = new VBox();
-		//centerContainerVLayout.setPadding(new Insets(5));
-		//centerContainerVLayout.setSpacing(2);
-		
-		//---COMPONETS FOR LEFT REGION----
-		//destinationIPnumberTextA = new TextField();
-		//destinationIPnumberTextA.setPromptText("IP Number"); 
-		
-		//destinationPortNumberTextA = new TextField();
-		//destinationPortNumberTextA.setPromptText("Port Number"); 
-		
-		//newChat = new Button("Connect");
-		//exitBtn = new Button("Exit");
-		
+				
 		//setting the listener of each Button 
 		//send Button for the center Region
 		sendBtn.setOnAction(this);
 		
-		//connection Button for the left Region
-		//newChat.setOnAction(this);
-		
-		//exit Button for the left Region
-		//exitBtn.setOnAction(this);		
-		
-		//adding components to the left Region to leftRegionVBoxLayout
-		//leftRegionVBoxLayout.getChildren().addAll(destinationIPnumberTextA,destinationPortNumberTextA,newChat,exitBtn);
 	
 		//Setting components for each region in the BorderPane 
 		borderP.setCenter(centerContainerVLayout);//adding all the components to the center regions
@@ -147,8 +118,7 @@ public class Window  implements EventHandler<ActionEvent>{
 			});
 		}); 
 		
-		
-		///-----------------------
+	
 		
 	}	
 	
@@ -162,18 +132,10 @@ public class Window  implements EventHandler<ActionEvent>{
 		
 			//Getting packet info From GUI
 			senderText = bottomPartOfChatTextA.getText();
-			//destinationIpn = destinationIPnumberTextA.getText();
-			//destinationPortN = destinationPortNumberTextA.getText();
+			
 			bottomPartOfChatTextA.clear();				// Clear the bottom input field
 			appendTxtToTextArea("Me: " + senderText);	// Append msg from input field
-			
-			/*
-			System.out.println("inside window method :");
-			System.out.println("destinationIpn : " + destinationIpn);
-			System.out.println("destinationPortN : " + destinationPortN);
-			*/
-			//sendPackageDToHashM();
-					
+							
 			
 			//If Port and IP is not in the hashMap
 			if(!Socket.hashMapDataHolder.containsKey(getIPandPort()))
