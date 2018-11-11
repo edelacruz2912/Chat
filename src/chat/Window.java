@@ -21,8 +21,7 @@ import javafx.stage.Stage;
 
 public class Window  implements EventHandler<ActionEvent>{
 
-	
-	
+		
 	//For the Top part of chat in center region
 	private VBox centerContainerVLayout;	
 	private TextArea topPartOfChatTextA;	
