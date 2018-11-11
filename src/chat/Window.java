@@ -139,7 +139,8 @@ public class Window  implements EventHandler<ActionEvent>{
 			
 			//If Port and IP is not in the hashMap
 			if(!Socket.hashMapDataHolder.containsKey(getIPandPort()))
-			{
+			{	
+				System.out.println("if key is not in hashMap inside WindowClass");
 				sendPackageDToHashM();
 			}	
 			
