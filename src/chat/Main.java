@@ -1,6 +1,12 @@
 package chat;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,6 +14,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 
@@ -15,9 +24,13 @@ public class Main extends Application{
 
 	//SOCKET CLASS
 	Socket  socket;
-	private int port = 7070;
-	private TextField destinationIPnumberTextA;
-	private TextField destinationPortNumberTextA;
+	private int port = 64000;
+	//private TextField destinationIPnumberTextA;
+	//private TextField destinationPortNumberTextA;
+	private Text txtTitle;
+	private TextField inputName;
+	private Button strBroadCast;
+	private String nameOfPerson;
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -33,8 +46,7 @@ public class Main extends Application{
 		//SOCKET CLASS
 		socket = new Socket(this.port);
 		//primaryStage.setTitle(" " +socket.Ip + " "+socket.port + " ");
-		primaryStage.setTitle("Chat Connector");
-				
+		primaryStage.setTitle("Chat Connector");				
 		Scene scene = new Scene(getChatConnectorContainer(),300,250);
 		scene.getStylesheets().add("chat/Window.css");
 		primaryStage.setScene(scene);
@@ -43,74 +55,83 @@ public class Main extends Application{
 	}
 	
 	/**
-	 * Create a container for the components for
-	 * Chat Connector and 'Start Chat' button event handling.
-	 * @return VBox - with the components for Chat Connector
+	 * BroadCast to all devices connected to the same netWork
+	 */	
+	public void broadcast(String personName,InetAddress address) throws IOException
+	{
+		DatagramSocket broadCastSocket = new DatagramSocket();
+		broadCastSocket.setBroadcast(true);	
+		String broadCastRS = "????? "+ personName + " ##### Eduardo";
+		byte[] buffer = broadCastRS.getBytes();		
+		DatagramPacket packet = new DatagramPacket(buffer, buffer.length, address, this.port);
+		broadCastSocket.send(packet);
+       	broadCastSocket.close();
+		
+	}
+	
+	/**
+	 * This method get the name from the user
+	 * to look for on the Net by making a broadCast
+	 * @return VBox (The BroadCastingWindow)
 	 */
 	public VBox getChatConnectorContainer() {
-		//FOR THE LEFT REGION
-		VBox connectorContainer = new VBox();
-//		connectorContainer.setPadding( new Insets(50));
-		connectorContainer.setPadding( new Insets(50,0, 25, 0));
+		VBox broadContainer = new VBox();
+		broadContainer.setAlignment(Pos.CENTER);
+		broadContainer.setPadding(new Insets(5,5,5,5));
+		broadContainer.setSpacing(8);
 		
-		destinationIPnumberTextA = new TextField();
-		destinationIPnumberTextA.setPromptText("IP Number"); 
-		destinationPortNumberTextA = new TextField();
-		destinationPortNumberTextA.setPromptText("Port Number");
+		txtTitle = new Text("Enter Name Please");
+		txtTitle.setFont(Font.font("Arial", FontWeight.BOLD, 14));		
 		
-		/**
-		 * setting the position for the textFields a button
-		 * 
-		 */
-		destinationIPnumberTextA.setAlignment(Pos.TOP_CENTER);		
-		destinationPortNumberTextA.setAlignment(Pos.BASELINE_CENTER);
+		inputName = new TextField();		
 		
-		destinationIPnumberTextA.setPadding(new Insets(10));
-		destinationPortNumberTextA.setPadding(new Insets(10));
-		
+		strBroadCast = new Button("Start BroadCast");
+		strBroadCast.setAlignment(Pos.BOTTOM_CENTER);
+		strBroadCast.setOnAction((e)-> { 
+			//System.out.println("BroadCastButton works");
 			
-		// Create new Window from Chat Connector. 
-		// Passing in IP and Port info from input fields.
-		// Adding this Window to hashMap lookup table. 
-		Button newChat = new Button("Start Chat!");
-		newChat.setAlignment(Pos.BOTTOM_CENTER);
-		newChat.getStyleClass().add("button"); //CSS properties applied from Window.css
-		newChat.setOnAction((e)-> { 
-			String DestIp = destinationIPnumberTextA.getText();
-			String DestPort = destinationPortNumberTextA.getText();
-			//System.out.println("ip: " +DestIp);
-			//System.out.println("port: " + DestPort);
-			//Check whether inputs are empty
-			if(DestIp.isEmpty() || DestPort.isEmpty()) { 
-				//System.out.println("this run");
-				return;
+			nameOfPerson = inputName.getText();
+			Platform.runLater(()->
+			{
+				inputName.clear();
+			});			
+			
+			
+			//System.out.println("nameofPerson  " + nameOfPerson);
+			
+			/**
+			 * include if statments 
+			 * to check if you have the name's Ip 
+			 * and port
+			 * 
+			 */
+			
+			//once the button is clicked 
+			//check called broadCast method.
+			
+			if(!nameOfPerson.isEmpty()) {
+				try 
+				{
+					System.out.println("this runs");
+					broadcast(nameOfPerson,InetAddress.getByName("255.255.255.255"));
+					System.out.println("shit");	
+					
+					
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
 			}
-			// If Chat w/ IP and PORT already open, dont open new chat window
-			if(Socket.hashMapDataHolder.containsKey("Ip:"+ DestIp + "Port:"+ DestPort)) {
-				return;
-			}
-			Window chatLayout = new Window(socket);
-			chatLayout.setDestIP(DestIp);
-			chatLayout.setDestPort(DestPort);
-			chatLayout.updateTitle();
-			//Setting the title when I start the conversation.
-			//using the Ip(From destinationIp) and port(from destinationPort) 
-			//chatLayout.newStageWindow.setTitle("IP: "+ DestIp + " " + " Port: "+DestPort);
-			//System.out.println("DestIp :---- " + DestIp  + "  DestPort :" + DestPort);
 			
-			
-			//keep tracks of conversation exists
-			Socket.hashMapDataHolder.put(chatLayout.getIPandPort(), chatLayout);
-			///hasHmap
-			socket.dataInsideHasMap();	
-			
-			
-			
-		});
+		});		
 		
-		connectorContainer.getChildren().addAll(destinationIPnumberTextA,destinationPortNumberTextA,newChat);
-				
-		return connectorContainer;
+		broadContainer.getChildren().addAll(txtTitle,inputName,strBroadCast);
+		
+		
+		return broadContainer;	
 	}
+
+
 
 }

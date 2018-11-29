@@ -107,13 +107,14 @@ public class Window  implements EventHandler<ActionEvent>{
 			
 			newStageWindow = new Stage(); //Stage of the chat Window
 			
-			newStageWindow.setTitle("IP: "+ referenceOfSocket.getIncomingIp() + " " + " Port: "+referenceOfSocket.getIncomingPort());
+			//newStageWindow.setTitle("IP: "+ referenceOfSocket.getIncomingIp() + " " + " Port: "+referenceOfSocket.getIncomingPort());
 			
 			newStageWindow.setScene(newSceneWindow);
 			newStageWindow.show();
 			//When you want to close chat Window.
 			newStageWindow.setOnCloseRequest((e) -> {
 				Socket.hashMapDataHolder.remove(getIPandPort());
+				System.out.println("removed from hashM on window class");
 			});
 		}); 
 		
@@ -139,7 +140,7 @@ public class Window  implements EventHandler<ActionEvent>{
 			//If Port and IP is not in the hashMap
 			if(!Socket.hashMapDataHolder.containsKey(getIPandPort()))
 			{	
-				System.out.println("if key is not in hashMap inside WindowClass");
+				//System.out.println("if key is not in hashMap inside WindowClass");
 				sendPackageDToHashM();
 			}	
 			
@@ -153,8 +154,8 @@ public class Window  implements EventHandler<ActionEvent>{
 			{
 				e.printStackTrace();
 			}			
-			System.out.println("destinationPortN in sender " + destinationPortN);
-			System.out.println("destinationPortN in sender with converter " + Integer.valueOf(destinationPortN));
+			//System.out.println("destinationPortN in sender " + destinationPortN);
+			//System.out.println("destinationPortN in sender with converter " + Integer.valueOf(destinationPortN));
 			socket.send(senderText, testIP,Integer.valueOf(destinationPortN));
 		}		
 		
@@ -168,11 +169,11 @@ public class Window  implements EventHandler<ActionEvent>{
 	
 	public void setDestIP(String ip) {
 		this.destinationIpn = ip;
-		System.out.println("setDestinationIPOnWindowClass " + this.destinationIpn);
+		//System.out.println("setDestinationIPOnWindowClass " + this.destinationIpn);
 	}
 	public void setDestPort(String port) {
 		this.destinationPortN = port;
-		System.out.println("setDestinationPortOnWindowClass " + this.destinationPortN);
+		//System.out.println("setDestinationPortOnWindowClass " + this.destinationPortN);
 	}
 	/**
 	 * Append MSN to the Top Part of the Chat
